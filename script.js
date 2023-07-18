@@ -22,38 +22,36 @@ var questions = [
     }
   ];
 
-const modal = document.getElementById("modal");
-const userForm = document.getElementById("userForm");
-const usernameInput = document.getElementById("usernameInput");
-const emailInput = document.getElementById("emailInput");
-const usernameDisplay = document.getElementById("usernameDisplay");
 
-
-
-
-
-userForm.addEventListener("submit", function (event) {
-  event.preventDefault();
-
-  let username = usernameInput.value;
-  let email = emailInput.value;
-  localStorage.setItem(username, email);
-  sessionStorage.setItem(username, email);
-
-  usernameDisplay.textContent = username;
-  modal.style.display = "none";
-  container.style.display = "block";
-  // if(sessionStorage.getItem(username).length == 10){
-  //   alert('session users limit exceeded! Restart browser to play more')
-  // }
-
+  const modal = document.getElementById("modal");
+  const userForm = document.getElementById("userForm");
+  const usernameInput = document.getElementById("usernameInput");
+  const emailInput = document.getElementById("emailInput");
+  const usernameDisplay = document.getElementById("usernameDisplay");
   
-});
-
-// <---------------------------------******------------------------------>
-
   
-
+  
+  
+  
+  userForm.addEventListener("submit", function (event) {
+    event.preventDefault();
+  
+    let username = usernameInput.value;
+    let email = emailInput.value;
+    localStorage.setItem(username, email);
+    sessionStorage.setItem(username, email);
+  
+    usernameDisplay.textContent = username;
+    modal.style.display = "none";
+    container.style.display = "block";
+    if(sessionStorage.getItem(username).length == 10){
+      alert('session users limit exceeded! Restart browser to play more')
+    }
+  
+    
+  });
+  
+// -------------------------------->>-------------------------------------
   const submit=document.getElementById('submit')
 
   var currentQuestion = 0; // Tracks the current question
