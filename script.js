@@ -43,9 +43,9 @@ userForm.addEventListener("submit", function (event) {
   usernameDisplay.textContent = username;
   modal.style.display = "none";
   container.style.display = "block";
-  if(sessionStorage.getItem(username).length == 10){
-    alert('session users limit exceeded! Restart browser to play more')
-  }
+  // if(sessionStorage.getItem(username).length == 10){
+  //   alert('session users limit exceeded! Restart browser to play more')
+  // }
 
   
 });
