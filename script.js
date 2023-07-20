@@ -1,3 +1,11 @@
+// Retrieve stored user data from localStorage
+const storedUserData = JSON.parse(localStorage.getItem("userData")) || {};
+let currentUserData = {};
+
+// Function to save user data in localStorage
+function saveUserData() {
+  localStorage.setItem("userData", JSON.stringify(storedUserData));
+}
 
 
 var questions = [
@@ -34,6 +42,10 @@ var questions = [
 ];
 
 // -------------------modal------------------------->
+
+
+
+
 const modal = document.getElementById("modal");
 const userForm = document.getElementById("userForm");
 const usernameInput = document.getElementById("usernameInput");
@@ -42,52 +54,91 @@ const usernameDisplay = document.getElementById("usernameDisplay");
 let previous = document.getElementById("previous");
 
 
+function showModal(){
+  modal.style.display =block ;
+  quiz.style.display = none;
+}
+
+
+
+
+
 
 userForm.addEventListener("submit", function (event) {
   event.preventDefault();
-
-
-  for(let i =0; i<localStorage.length; i++){
-    let email = emailInput.value;
-    if(email == localStorage.key(i)){
-      let a = localStorage.getItem(email)
-      quiz.innerHTML = `<h2>You answered ${a} out of ${questions.length} correctly!!</h2>
-      <button onclick = "location.reload()">Reload</button>`;
+  const username = document.getElementById("usernameInput").value;
+  const email = document.getElementById("emailInput").value;
+  if (storedUserData[email]) {
+    currentUserData = storedUserData[email];
+    if (currentUserData.score !== undefined) {
+      showScorePage();
+      return;
     }
+  } else {
+    // User data doesn't exist, create a new entry
+    currentUserData = { username, email, score: 0 };
+    storedUserData[email] = currentUserData;
+    saveUserData();
   }
 
-  let username = usernameInput.value;
-  let email = emailInput.value;
  
+
   usernameDisplay.textContent = username;
   modal.style.display = "none";
   container.style.display = "block";
+
+  if (sessionStorage.getItem("currentQuestionIndex")) {
+    currentQuestion = parseInt(
+      sessionStorage.getItem("currentQuestionIndex")
+    );
+    userAnswers = JSON.parse(sessionStorage.getItem("userAnswers"));
+    displayQuestion();
+  } else {
+
+    currentQuestion = 0;
+    userAnswers = [];
+    displayQuestion();
+  }
+  
 });
+
+
+
+
 
 
 const submit = document.getElementById("submit");
 
-let currentQuestion = 0; 
+let currentQuestion = 0;
 
-let userAnswers =[];
+let userAnswers = [];
+
+
+
+
+
 
 function displayQuestion() {
   let questionElement = document.getElementById("question");
-  let choiceElements = document.getElementsByTagName("label"); 
+  let choiceElements = document.getElementsByTagName("label");
 
   questionElement.textContent = questions[currentQuestion].question;
- 
 
   for (let i = 0; i < choiceElements.length; i++) {
     choiceElements[i].textContent = questions[currentQuestion].choices[i];
   }
+   // Save current question index in sessionStorage
+   sessionStorage.setItem('currentQuestionIndex', currentQuestion);
 
-// Check if the user has answered this question previously
-let previousAnswer = userAnswers[currentQuestion];
-if (previousAnswer !== undefined) {
-  let choices = document.getElementsByName("choice");
-  choices[previousAnswer].checked = true;
-}
+
+  // Check if the user has answered this question previously
+  let previousAnswer = userAnswers[currentQuestion];
+  if (previousAnswer !== undefined) {
+    let choices = document.getElementsByName("choice");
+    choices[previousAnswer].checked = true;
+  }
+
+  sessionStorage.setItem('current', currentQuestion);
 
   if (currentQuestion == 0) {
     previous.style.display = "none";
@@ -97,68 +148,159 @@ if (previousAnswer !== undefined) {
 }
 
 
-submit.addEventListener("click", () => {
-  
 
-   
-  let choices = document.getElementsByName("choice");
 
-  let selectedChoice = -1;
 
-  for (var i = 0; i < choices.length; i++) {
-    if (choices[i].checked) {
+
+function handleSelected(){
+  let choices = document.getElementsByName("choice")
+  let selectedChoice= -1;
+  for(var i=0; i<choices.length; i++){
+    if(choices[i].checked){
       selectedChoice = parseInt(choices[i].value);
-      for (var i = 0; i < choices.length; i++) {
-        choices[i].checked = false
-        
+      for(var i = 0; i<choices.length; i++ ){
+        choices[i].checked=false;
       }
-      
       break;
     }
-  
   }
-
-  if (selectedChoice == -1) {
-    alert("Please select an option.");
+  if(selectedChoice ==-1){
+    alert('Please select option!!!');
     return;
   }
-  userAnswers[currentQuestion]=selectedChoice 
-      
-
+  userAnswers[currentQuestion]=selectedChoice;
+  sessionStorage.setItem(currentQuestion, selectedChoice);
   currentQuestion++;
-    
-  if (currentQuestion === questions.length) {
-    calculateScore()
-    let email=emailInput.value
-    let a = localStorage.getItem(email)
-    quiz.innerHTML = `<h2>You answered ${a} out of ${questions.length} correctly!!</h2>
-      <button onclick = "location.reload()">Reload</button>`;
-  } else {
+
+
+  if(currentQuestion===questions.length){
+    showScorePage();
+    calculateScore();
+  }else{
     displayQuestion();
   }
+}
 
- 
- 
-});
+
+
+
+
+function showScorePage(){
+  quiz.style.display="none"
+  document.getElementById("scorePage").style.display="block"
+  
+  // calculateScore()
+  // Retrieve all user data from localStorage
+  const allUserData = Object.values(storedUserData);
+
+  const scoreTableBody = document.getElementById('scoreTableBody');
+  scoreTableBody.innerHTML = '';
+
+  // Create table rows for each user's score
+  allUserData.forEach((userData) => {
+    const row = document.createElement('tr');
+
+    const usernameCell = document.createElement('td');
+    usernameCell.textContent = userData.username;
+    row.appendChild(usernameCell);
+
+    const emailCell = document.createElement('td');
+    emailCell.textContent = userData.email;
+    row.appendChild(emailCell);
+
+    const scoreCell = document.createElement('td');
+    scoreCell.textContent = userData.score;
+    row.appendChild(scoreCell);
+
+    scoreTableBody.appendChild(row);
+  });
+  document.getElementById('btn').innerHTML=`<button onclick = "location.reload()">Reload</button>`
+
+
+}
+submit.addEventListener("click", handleSelected)
+
+
+// submit.addEventListener("click", () => {
+//   let choices = document.getElementsByName("choice");
+
+//   let selectedChoice = -1;
+
+//   for (var i = 0; i < choices.length; i++) {
+//     if (choices[i].checked) {
+//       selectedChoice = parseInt(choices[i].value);
+//       for (var i = 0; i < choices.length; i++) {
+//         choices[i].checked = false;
+//       }
+
+//       break;
+//     }
+//   }
+
+//   if (selectedChoice == -1) {
+//     alert("Please select an option.");
+//     return;
+//   }
+//   userAnswers[currentQuestion] = selectedChoice;
+//   sessionStorage.setItem(currentQuestion, selectedChoice)
+  
+  
+
+//   currentQuestion++;
+
+//   if (currentQuestion === questions.length) {
+//     calculateScore();
+//     let email = emailInput.value;
+//     let a = localStorage.getItem(email);
+//     quiz.innerHTML = `<h2>You answered ${a} out of ${questions.length} correctly!!</h2>
+//       <button onclick = "location.reload()">Reload</button>`;
+      
+//   } else {
+//     displayQuestion();
+//   }
+// });
+
+
+
+
+
 
 function calculateScore() {
   let score = 0;
   for (let i = 0; i < questions.length; i++) {
     if (userAnswers[i] === questions[i].answer) {
       score++;
+      
     }
   }
-  let email= emailInput.value
-  localStorage.setItem(email, score)
+  currentUserData.score = score;
+  saveUserData();
 }
+
+
+
+
+
+
+
 
 function PreviousQuestion() {
   currentQuestion--;
-  
-  
   displayQuestion();
+
+
+
 }
-previous.addEventListener("click", PreviousQuestion)
+
+
+
+
+
+previous.addEventListener("click", PreviousQuestion);
+
+
+
+
 
 
 function shuffleQuestions() {
@@ -170,15 +312,7 @@ function shuffleQuestions() {
   }
 }
 
-
 shuffleQuestions();
 displayQuestion();
-
-
-
-
-
-
-
 
 
