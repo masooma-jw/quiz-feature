@@ -58,7 +58,7 @@ userForm.addEventListener("submit", function (event) {
 
   let username = usernameInput.value;
   let email = emailInput.value;
-  // sessionStorage.setItem(email,username)
+ 
   usernameDisplay.textContent = username;
   modal.style.display = "none";
   container.style.display = "block";
@@ -67,8 +67,8 @@ userForm.addEventListener("submit", function (event) {
 
 const submit = document.getElementById("submit");
 
-var currentQuestion = 0; // Tracks the current question
-var score = 0; // Tracks the score
+var currentQuestion = 0; 
+
 var userAnswers =[];
 
 function displayQuestion() {
@@ -108,6 +108,10 @@ submit.addEventListener("click", () => {
   for (var i = 0; i < choices.length; i++) {
     if (choices[i].checked) {
       selectedChoice = parseInt(choices[i].value);
+      for (var i = 0; i < choices.length; i++) {
+        choices[i].checked = false
+        
+      }
       
       break;
     }
@@ -118,42 +122,42 @@ submit.addEventListener("click", () => {
     alert("Please select an option.");
     return;
   }
-  userAnswers[currentQuestion]=selectedChoice;
- 
- 
-
-  if (selectedChoice == questions[currentQuestion].answer) {
-    score++;
-    
-    
-  }
-
-
-  
+  userAnswers[currentQuestion]=selectedChoice 
+      
 
   currentQuestion++;
     
   if (currentQuestion === questions.length) {
+    calculateScore()
     let email=emailInput.value
-    localStorage.setItem(email, score)
-    quiz.innerHTML = `<h2>You answered ${score} out of ${questions.length} correctly!!</h2>
+    let a = localStorage.getItem(email)
+    quiz.innerHTML = `<h2>You answered ${a} out of ${questions.length} correctly!!</h2>
       <button onclick = "location.reload()">Reload</button>`;
   } else {
     displayQuestion();
   }
 
-  for (var i = 0; i < choices.length; i++) {
-    choices[i].checked = false
-    
-  }
+ 
  
 });
 
-function showPreviousQuestion() {
+function calculateScore() {
+  let score = 0;
+  for (let i = 0; i < questions.length; i++) {
+    if (userAnswers[i] === questions[i].answer) {
+      score++;
+    }
+  }
+  let email= emailInput.value
+  localStorage.setItem(email, score)
+}
+
+function PreviousQuestion() {
   currentQuestion--;
   
   displayQuestion();
 }
+previous.addEventListener("click", PreviousQuestion)
 
 
 function shuffleQuestions() {
@@ -164,7 +168,7 @@ function shuffleQuestions() {
     questions[j] = temp;
   }
 }
-previous.addEventListener("click", showPreviousQuestion)
+
 
 shuffleQuestions();
 displayQuestion();
