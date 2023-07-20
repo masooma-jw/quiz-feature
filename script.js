@@ -67,25 +67,25 @@ userForm.addEventListener("submit", function (event) {
 
 const submit = document.getElementById("submit");
 
-var currentQuestion = 0; 
+let currentQuestion = 0; 
 
-var userAnswers =[];
+let userAnswers =[];
 
 function displayQuestion() {
-  var questionElement = document.getElementById("question");
-  var choiceElements = document.getElementsByTagName("label"); 
+  let questionElement = document.getElementById("question");
+  let choiceElements = document.getElementsByTagName("label"); 
 
   questionElement.textContent = questions[currentQuestion].question;
  
 
-  for (var i = 0; i < choiceElements.length; i++) {
+  for (let i = 0; i < choiceElements.length; i++) {
     choiceElements[i].textContent = questions[currentQuestion].choices[i];
   }
 
 // Check if the user has answered this question previously
-var previousAnswer = userAnswers[currentQuestion];
+let previousAnswer = userAnswers[currentQuestion];
 if (previousAnswer !== undefined) {
-  var choices = document.getElementsByName("choice");
+  let choices = document.getElementsByName("choice");
   choices[previousAnswer].checked = true;
 }
 
@@ -101,9 +101,9 @@ submit.addEventListener("click", () => {
   
 
    
-  var choices = document.getElementsByName("choice");
+  let choices = document.getElementsByName("choice");
 
-  var selectedChoice = -1;
+  let selectedChoice = -1;
 
   for (var i = 0; i < choices.length; i++) {
     if (choices[i].checked) {
@@ -155,15 +155,16 @@ function calculateScore() {
 function PreviousQuestion() {
   currentQuestion--;
   
+  
   displayQuestion();
 }
 previous.addEventListener("click", PreviousQuestion)
 
 
 function shuffleQuestions() {
-  for (var i = questions.length - 1; i > 0; i--) {
-    var j = Math.floor(Math.random() * (i + 1));
-    var temp = questions[i];
+  for (let i = questions.length - 1; i > 0; i--) {
+    let j = Math.floor(Math.random() * (i + 1));
+    let temp = questions[i];
     questions[i] = questions[j];
     questions[j] = temp;
   }
