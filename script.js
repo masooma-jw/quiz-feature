@@ -41,10 +41,6 @@ var questions = [
   },
 ];
 
-// -------------------modal------------------------->
-
-
-
 
 const modal = document.getElementById("modal");
 const userForm = document.getElementById("userForm");
@@ -52,14 +48,6 @@ const usernameInput = document.getElementById("usernameInput");
 const emailInput = document.getElementById("emailInput");
 const usernameDisplay = document.getElementById("usernameDisplay");
 let previous = document.getElementById("previous");
-
-
-function showModal(){
-  modal.style.display ="block" ;
-  container.style.display = "none";
-}
-
-
 
 
 
@@ -72,10 +60,10 @@ userForm.addEventListener("submit", function (event) {
     currentUserData = storedUserData[email];
     if (currentUserData.score !== undefined) {
       showScorePage();
-      return;
+      // return;
     }
   } else {
-    // User data doesn't exist, create a new entry
+  
     currentUserData = { username, email, score: 0 };
     storedUserData[email] = currentUserData;
     saveUserData();
@@ -87,20 +75,6 @@ userForm.addEventListener("submit", function (event) {
   modal.style.display = "none";
   container.style.display = "block";
 
-  // if (sessionStorage.getItem("currentQuestionIndex")) {
-  //   currentQuestion = parseInt(
-  //     sessionStorage.getItem("currentQuestionIndex")
-  //   );
-  //   userAnswers = JSON.parse(sessionStorage.getItem("userAnswers"));
-  //   displayQuestion();
-
-  // } else {
-
-  //   // currentQuestion = 0;
-  //   userAnswers = [];
-  //   displayQuestion();
-  // }
-  
 });
 
 
@@ -128,11 +102,7 @@ function displayQuestion() {
   for (let i = 0; i < choiceElements.length; i++) {
     choiceElements[i].textContent = questions[currentQuestion].choices[i];
   }
-   // Save current question index in sessionStorage
-   sessionStorage.setItem('currentQuestionIndex', currentQuestion);
 
-
-  // Check if the user has answered this question previously
   let previousAnswer = userAnswers[currentQuestion];
   if (previousAnswer !== undefined) {
     let choices = document.getElementsByName("choice");
@@ -170,7 +140,7 @@ function handleSelected(){
   }
   
   userAnswers[currentQuestion]=selectedChoice;
-  sessionStorage.setItem(currentQuestion, selectedChoice);
+  // sessionStorage.setItem(currentQuestion, selectedChoice);
   
   currentQuestion++;
 
@@ -178,7 +148,7 @@ function handleSelected(){
   if(currentQuestion===questions.length){
     calculateScore();
     showScorePage();
-    
+    calculateScore();
   }else{
     displayQuestion();
   }
@@ -191,6 +161,7 @@ submit.addEventListener("click", handleSelected)
 
 
 function showScorePage(){
+  modal.style.display="none";
   quiz.style.display="none"
   document.getElementById("scorePage").style.display="block"
   
@@ -223,47 +194,6 @@ function showScorePage(){
 
 
 }
-
-
-
-// submit.addEventListener("click", () => {
-//   let choices = document.getElementsByName("choice");
-
-//   let selectedChoice = -1;
-
-//   for (var i = 0; i < choices.length; i++) {
-//     if (choices[i].checked) {
-//       selectedChoice = parseInt(choices[i].value);
-//       for (var i = 0; i < choices.length; i++) {
-//         choices[i].checked = false;
-//       }
-
-//       break;
-//     }
-//   }
-
-//   if (selectedChoice == -1) {
-//     alert("Please select an option.");
-//     return;
-//   }
-//   userAnswers[currentQuestion] = selectedChoice;
-//   sessionStorage.setItem(currentQuestion, selectedChoice)
-  
-  
-
-//   currentQuestion++;
-
-//   if (currentQuestion === questions.length) {
-//     calculateScore();
-//     let email = emailInput.value;
-//     let a = localStorage.getItem(email);
-//     quiz.innerHTML = `<h2>You answered ${a} out of ${questions.length} correctly!!</h2>
-//       <button onclick = "location.reload()">Reload</button>`;
-      
-//   } else {
-//     displayQuestion();
-//   }
-// });
 
 
 

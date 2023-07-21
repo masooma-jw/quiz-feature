@@ -18,11 +18,12 @@
 
   <div id="container" >
  
-    <h2>Welcome, <span id="usernameDisplay"></span>!</h2>
+    
  
  
    
     <div id="quiz" class="quiz1">
+      <h2>Welcome, <span id="usernameDisplay"></span>!</h2>
       
      
       
@@ -43,38 +44,37 @@
         </ul>
       
       <button id="submit">Submit</button>
-      <div class="previousbtn">
+    
         <button id="previous">PREVIOUS </button>
-      </div>
+      
       
      
     </div>
+  </div>
+  <div class="container1">
+    
+  </div>
+  <div id="scorePage" >
+    <h1>Quiz Completed</h1>
+    <p id="finalScore"></p>
+    <table id="scoreTable" style="border: 1px solid black;">
+      <thead>
+        <tr>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Score</th>
+      </tr>
+    </thead>
+    <tbody id="scoreTableBody"></tbody>
+  </table>
+  <div id="btn">
 
-    <div id="scorePage" style="display: none;">
-      <h1>Quiz Completed</h1>
-      <p id="finalScore"></p>
-      <table id="scoreTable">
-        <thead>
-          <tr>
-          <th>Username</th>
-          <th>Email</th>
-          <th>Score</th>
-        </tr>
-      </thead>
-      <tbody id="scoreTableBody"></tbody>
-    </table>
-    <div id="btn">
-
-      <button id="restartButton">Restart Quiz</button>
-    </div>
-    </div>
-  
-
-
+    <button id="restartButton">Restart Quiz</button>
+  </div>
   </div>
  
 
-  </div>
+  
   <script src="script.js"></script>
 </body>
 </html>
