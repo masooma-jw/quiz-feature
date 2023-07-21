@@ -55,8 +55,8 @@ let previous = document.getElementById("previous");
 
 
 function showModal(){
-  modal.style.display =block ;
-  quiz.style.display = none;
+  modal.style.display ="block" ;
+  container.style.display = "none";
 }
 
 
@@ -87,18 +87,19 @@ userForm.addEventListener("submit", function (event) {
   modal.style.display = "none";
   container.style.display = "block";
 
-  if (sessionStorage.getItem("currentQuestionIndex")) {
-    currentQuestion = parseInt(
-      sessionStorage.getItem("currentQuestionIndex")
-    );
-    userAnswers = JSON.parse(sessionStorage.getItem("userAnswers"));
-    displayQuestion();
-  } else {
+  // if (sessionStorage.getItem("currentQuestionIndex")) {
+  //   currentQuestion = parseInt(
+  //     sessionStorage.getItem("currentQuestionIndex")
+  //   );
+  //   userAnswers = JSON.parse(sessionStorage.getItem("userAnswers"));
+  //   displayQuestion();
 
-    currentQuestion = 0;
-    userAnswers = [];
-    displayQuestion();
-  }
+  // } else {
+
+  //   // currentQuestion = 0;
+  //   userAnswers = [];
+  //   displayQuestion();
+  // }
   
 });
 
@@ -121,7 +122,7 @@ let userAnswers = [];
 function displayQuestion() {
   let questionElement = document.getElementById("question");
   let choiceElements = document.getElementsByTagName("label");
-
+  
   questionElement.textContent = questions[currentQuestion].question;
 
   for (let i = 0; i < choiceElements.length; i++) {
@@ -138,8 +139,6 @@ function displayQuestion() {
     choices[previousAnswer].checked = true;
   }
 
-  sessionStorage.setItem('current', currentQuestion);
-
   if (currentQuestion == 0) {
     previous.style.display = "none";
   } else {
@@ -155,6 +154,7 @@ function displayQuestion() {
 function handleSelected(){
   let choices = document.getElementsByName("choice")
   let selectedChoice= -1;
+
   for(var i=0; i<choices.length; i++){
     if(choices[i].checked){
       selectedChoice = parseInt(choices[i].value);
@@ -168,18 +168,23 @@ function handleSelected(){
     alert('Please select option!!!');
     return;
   }
+  
   userAnswers[currentQuestion]=selectedChoice;
   sessionStorage.setItem(currentQuestion, selectedChoice);
+  
   currentQuestion++;
 
 
   if(currentQuestion===questions.length){
-    showScorePage();
     calculateScore();
+    showScorePage();
+    
   }else{
     displayQuestion();
   }
 }
+
+submit.addEventListener("click", handleSelected)
 
 
 
@@ -218,7 +223,7 @@ function showScorePage(){
 
 
 }
-submit.addEventListener("click", handleSelected)
+
 
 
 // submit.addEventListener("click", () => {
@@ -280,10 +285,6 @@ function calculateScore() {
 
 
 
-
-
-
-
 function PreviousQuestion() {
   currentQuestion--;
   displayQuestion();
@@ -291,9 +292,6 @@ function PreviousQuestion() {
 
 
 }
-
-
-
 
 
 previous.addEventListener("click", PreviousQuestion);
