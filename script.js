@@ -80,7 +80,7 @@ userForm.addEventListener("submit", function (event) {
       email,
       score: 0,
       currentQuestion: 0,
-      userAnswers
+      // userAnswers
     };
     localStorage.setItem(email, JSON.stringify(currentUserData));
   }
@@ -99,9 +99,9 @@ let userAnswers = currentUserData.userAnswers || [];
 function displayQuestion() {
   if (currentUserData.currentQuestion === undefined) {
     currentUserData.currentQuestion = 0;
+    currentUserData.userAnswers = [];
     saveUserData();
   }
-
   let questionElement = document.getElementById("question");
   let choiceElements = document.getElementsByTagName("label");
 
@@ -132,11 +132,11 @@ function handleSelected() {
   let choices = document.getElementsByName("choice");
   let selectedChoice = -1;
 
-  for (var i = 0; i < choices.length; i++) {
+  for (let i = 0; i < choices.length; i++) {
     if (choices[i].checked) {
       selectedChoice = parseInt(choices[i].value);
-      for (var i = 0; i < choices.length; i++) {
-        choices[i].checked = false;
+      for (let j = 0; j < choices.length; j++) {
+        choices[j].checked = false;
       }
       break;
     }
@@ -148,6 +148,7 @@ function handleSelected() {
 
   userAnswers[currentUserData.currentQuestion] = selectedChoice;
   currentUserData.currentQuestion++;
+  currentUserData.userAnswers = userAnswers;
   saveUserData();
 
   if (currentUserData.currentQuestion === questions.length) {
