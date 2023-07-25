@@ -67,6 +67,7 @@ function loadUserData() {
 
 window.addEventListener("load", () => {
   loadUserData();
+  usernameDisplay.textContent=currentUserData.username;
 });
 
 window.addEventListener("beforeunload", () => {
