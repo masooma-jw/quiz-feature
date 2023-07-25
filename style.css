@@ -7,9 +7,7 @@ body {
 }
 
 
-#quiz {
-  display: none;
-  
+#quiz {  
   padding: 2px 20px;
   margin: auto;
   width: 60%;
@@ -38,7 +36,6 @@ form input {
   outline: 5px solid black;
   padding: 15px 1px;
   width: 60%;
-  display: inline-flex;
   background-color: rgb(163, 58, 75);
   border-radius: 10px;
   box-shadow: 0 10px 10px #d157b9;
@@ -104,9 +101,5 @@ button:hover {
   border-radius: 20px;
   box-shadow: 0 0 20px #251729;
   text-align: center;  
-}
-
-#scorePage{
-  display: none;
 }
 
