@@ -175,7 +175,7 @@ userForm.addEventListener("submit", function (event) {
 
   usernameDisplay.textContent = username;
   showQuiz();
-  shuffleQuestions();
+  // shuffleQuestions();
   displayQuestion();
 });
 
@@ -320,11 +320,11 @@ function restartQuiz() {
 
 document.getElementById("restartButton").addEventListener("click", restartQuiz);
 
-function shuffleQuestions() {
-    for (let i = questions.length - 1; i > 0; i--) {
-        let j = Math.floor(Math.random() * (i + 1));
-        let temp = questions[i];
-        questions[i] = questions[j];
-        questions[j] = temp;
-    }
-}
+// function shuffleQuestions() {
+//     for (let i = questions.length - 1; i > 0; i--) {
+//         let j = Math.floor(Math.random() * (i + 1));
+//         let temp = questions[i];
+//         questions[i] = questions[j];
+//         questions[j] = temp;
+//     }
+// }
