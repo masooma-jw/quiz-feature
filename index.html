@@ -1,55 +1,78 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Quiz App</title>
-  <link rel="stylesheet" type="text/css" href="style.css">
-</head>
-<body>
-  <h1>Quiz App</h1>
+  <head>
+    <title>Quiz App</title>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+  </head>
+  <body>
+    <h1>Quiz App</h1>
 
-  <!-- Modal Box -->
-<div id="modal">
-  <form id="userForm">
-    <input type="text" id="usernameInput" maxlength="10" placeholder="Enter Username" required>
-    <input type="email" id="emailInput" placeholder="Enter Email"  required>
-    <button type="submit">Start Quiz</button>
-  </form>
-</div>
+    <div id="modal">
+      <form id="userForm">
+        <input
+          type="text"
+          id="usernameInput"
+          maxlength="10"
+          placeholder="Enter Username"
+          required
+        />
+        <input
+          type="text"
+          id="emailInput"
+          placeholder="Enter Email"
+        />
+        <button type="submit">Start Quiz</button>
+      </form>
+    </div>
 
-  <div id="container" >
- 
-    <h2>Welcome, <span id="usernameDisplay"></span>!</h2>
- 
- 
-   
-    <div id="quiz" class="quiz1">
-     
-      
+    <div id="container">
+      <div id="quiz" class="quiz1">
+        <h2>Welcome, <span id="usernameDisplay"></span>!</h2>
+
         <h2 id="question"></h2>
         <ul id="choices">
-          <li><input type="radio" name="choice" value="0" id="a">
+          <li>
+            <input type="radio" name="choice" value="0" id="a" />
             <label for="a"></label>
-            </li>
-          <li><input type="radio" name="choice" value="1" id="b">
+          </li>
+          <li>
+            <input type="radio" name="choice" value="1" id="b" />
             <label for="b"></label>
-            </li>
-          <li><input type="radio" name="choice" value="2" id="c">
+          </li>
+          <li>
+            <input type="radio" name="choice" value="2" id="c" />
             <label for="c"></label>
           </li>
-          <li><input type="radio" name="choice" value="3" id="d">
+          <li>
+            <input type="radio" name="choice" value="3" id="d" />
             <label for="d"></label>
-            </li>
+          </li>
         </ul>
-      
-      <button id="submit">Submit</button>
-      
-     
+
+        <button id="submit">SUBMIT</button>
+
+        <button id="previous">PREVIOUS</button>
+      </div>
     </div>
-  
+    <div class="container1"></div>
+    <div id="scorePage">
+      <h1>Quiz Completed</h1>
+      <p id="finalScore"></p>
+      <table id="scoreTable" style="border: 1px solid black">
+        <thead>
+          <tr>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Score</th>
+          </tr>
+        </thead>
+        <tbody id="scoreTableBody"></tbody>
+      </table>
+      <div>
+        <button id="restartButton">Restart Quiz</button>
+      </div>
+    </div>
 
-
-  </div>
-  
-  <script src="script.js"></script>
-</body>
+    <script src="script.js"></script>
+  </body>
 </html>
