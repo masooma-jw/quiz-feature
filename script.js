@@ -1,4 +1,3 @@
-
 function setCookie(name, value, days) {
   let expires = "";
   if (days) {
@@ -6,9 +5,13 @@ function setCookie(name, value, days) {
     date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
     expires = "; expires=" + date.toUTCString();
   }
-  document.cookie = name + "=" + encodeURIComponent(JSON.stringify(value)) + expires + "; path=/";
+  document.cookie =
+    name +
+    "=" +
+    encodeURIComponent(JSON.stringify(value)) +
+    expires +
+    "; path=/";
 }
-
 
 function getCookie(name) {
   const nameEQ = name + "=";
@@ -16,7 +19,10 @@ function getCookie(name) {
   for (let i = 0; i < ca.length; i++) {
     let c = ca[i];
     while (c.charAt(0) == " ") c = c.substring(1, c.length);
-    if (c.indexOf(nameEQ) == 0) return JSON.parse(decodeURIComponent(c.substring(nameEQ.length, c.length)));
+    if (c.indexOf(nameEQ) == 0)
+      return JSON.parse(
+        decodeURIComponent(c.substring(nameEQ.length, c.length))
+      );
   }
   return null;
 }
@@ -38,18 +44,18 @@ function loadUserData() {
 
   if (sessionStorageData) {
     currentUserData = JSON.parse(sessionStorageData);
-  } else if (cookieData) {
-    currentUserData = cookieData;
-  } else if (localStorageData) {
-    currentUserData = JSON.parse(localStorageData);
-  } else {
-  
+  }
+  //  else if (cookieData) {
+  //   currentUserData = cookieData;
+  // } else if (localStorageData) {
+  //   currentUserData = JSON.parse(localStorageData);
+  // }
+  else {
     showModal();
     return;
   }
 
   if (currentUserData.currentQuestion !== undefined) {
-    
     userAnswers = currentUserData.userAnswers || [];
     if (currentUserData.currentQuestion >= questions.length) {
       showScorePage();
@@ -60,22 +66,20 @@ function loadUserData() {
     return;
   }
 
-
   showModal();
 }
 
-
 window.addEventListener("load", () => {
   loadUserData();
-  usernameDisplay.textContent=currentUserData.username;
+  usernameDisplay.textContent = currentUserData.username;
 });
 
 window.addEventListener("beforeunload", () => {
   if (currentUserData.currentQuestion !== undefined) {
     sessionStorage.setItem("userData", JSON.stringify(currentUserData));
+    saveUserDataCookies();
   }
 });
-
 
 let questions = [
   {
@@ -119,19 +123,15 @@ let previous = document.getElementById("previous");
 let quiz = document.getElementById("quiz");
 let scorePage = document.getElementById("scorePage");
 
-
-
-
-
-function showModal(){
-  modal.style.display="inline-flex";
-  quiz.style.display="none";
-  scorePage.style.display="none"
+function showModal() {
+  modal.style.display = "inline-flex";
+  quiz.style.display = "none";
+  scorePage.style.display = "none";
 }
-function showQuiz(){
-  modal.style.display="none";
-  quiz.style.display="block";
-  scorePage.style.display="none"
+function showQuiz() {
+  modal.style.display = "none";
+  quiz.style.display = "block";
+  scorePage.style.display = "none";
 }
 
 userForm.addEventListener("submit", function (event) {
@@ -140,14 +140,14 @@ userForm.addEventListener("submit", function (event) {
   const username = document.getElementById("usernameInput").value;
 
   const emailInput = document.getElementById("emailInput");
-  const email = emailInput.value.trim(); 
+  const email = emailInput.value.trim();
   const emailPattern = /^[A-Za-z\._\-0-9]*[@][A-Za-z]*[\.][a-z]{2,4}$/;
 
   if (!emailPattern.test(email)) {
     alert("Please enter a valid email");
-    emailInput.value = ""; 
+    emailInput.value = "";
     emailInput.focus();
-    return; 
+    return;
   }
 
   if (localStorage.length >= 10) {
@@ -155,7 +155,6 @@ userForm.addEventListener("submit", function (event) {
     localStorage.clear();
     location.reload();
   }
-
 
   const storedUserData = JSON.parse(localStorage.getItem(email));
   if (storedUserData) {
@@ -167,16 +166,16 @@ userForm.addEventListener("submit", function (event) {
       username,
       email,
       score: 0,
-      currentQuestion: 0
+      currentQuestion: 0,
     };
     localStorage.setItem(email, JSON.stringify(currentUserData));
     saveUserData();
     saveUserDataCookies();
   }
 
+  shuffleQuestions();
   usernameDisplay.textContent = username;
   showQuiz();
-  // shuffleQuestions();
   displayQuestion();
 });
 
@@ -216,7 +215,6 @@ function displayQuestion() {
 }
 
 function handleSelected() {
-
   let choices = document.getElementsByName("choice");
   let selectedChoice = -1;
 
@@ -240,13 +238,11 @@ function handleSelected() {
     return;
   }
 
- 
   currentUserData.currentQuestion++;
 
   if (currentUserData.currentQuestion === questions.length) {
     calculateScore();
     showScorePage();
-    
   } else {
     displayQuestion();
   }
@@ -281,7 +277,6 @@ function showScorePage() {
 
     scoreTableBody.appendChild(row);
   });
-
 }
 
 function calculateScore() {
@@ -311,21 +306,21 @@ function restartQuiz() {
     localStorage.clear();
     window.close();
   }
-
+  sessionStorage.clear();
   document.getElementById("userForm").reset();
   currentUserData = {};
   userAnswers = [];
-  
-  showModal()
+
+  showModal();
 }
 
 document.getElementById("restartButton").addEventListener("click", restartQuiz);
 
-// function shuffleQuestions() {
-//     for (let i = questions.length - 1; i > 0; i--) {
-//         let j = Math.floor(Math.random() * (i + 1));
-//         let temp = questions[i];
-//         questions[i] = questions[j];
-//         questions[j] = temp;
-//     }
-// }
+function shuffleQuestions() {
+  for (let i = questions.length - 1; i > 0; i--) {
+    let j = Math.floor(Math.random() * (i + 1));
+    let temp = questions[i];
+    questions[i] = questions[j];
+    questions[j] = temp;
+  }
+}
